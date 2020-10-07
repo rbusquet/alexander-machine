@@ -12,15 +12,16 @@ const findSiblingOn = (array, [y, x]) => {
 function bulbToggler(prevBulb, scenario, array, coordinates) {
   const toggleChance = Math.random() <= 0.5;
 
-  const connectedCondition =
-    scenario === "connected" && findSiblingOn(array, coordinates);
-  const disconnectedCondition = scenario === "disconnected" && !prevBulb;
-  const randomCondition = scenario === "random";
-
-  if (connectedCondition) return toggleChance;
-  if (disconnectedCondition) return toggleChance;
-  if (randomCondition) return toggleChance;
-  else return prevBulb;
+  switch (scenario) {
+    case "connected":
+      return findSiblingOn(array, coordinates) ? toggleChance : prevBulb;
+    case "disconnected":
+      return prevBulb || toggleChance;  // is this equivalent to !prevBulb ? toggleChance : prevBulb?
+    case "random":
+      return toggleChance;
+    default:
+      return prevBulb
+  }
 }
 
 const initState = [...Array(10)].map((row = [...Array(10)]) =>
